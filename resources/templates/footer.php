@@ -1,5 +1,5 @@
 <div id="footer">
-	Footer content...
+    ©utaustin
 </div>
 </body>
 </html>

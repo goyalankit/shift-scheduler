@@ -10,10 +10,10 @@
 
 $config = array(
 	"db" => array(
-		"db1" => array(
-			"dbname" => "database1",
-			"username" => "dbUser",
-			"password" => "pa$$",
+		"development" => array(
+			"dbname" => "osr_scheduler",
+			"username" => "osr",
+			"password" => "osr@ut",
 			"host" => "localhost"
 		),
 		"db2" => array(
@@ -24,7 +24,7 @@ $config = array(
 		)
 	),
 	"urls" => array(
-		"baseUrl" => "http://example.com"
+		"baseUrl" => "http://osr.ut.com"
 	),
 	"paths" => array(
 		"resources" => "/path/to/resources",
@@ -34,6 +34,8 @@ $config = array(
 		)
 	)
 );
+
+
 
 /*
 	I will usually place these next things in a bootstrap file or some type of environment
@@ -45,6 +47,7 @@ $config = array(
 	Creating constants for heavily used paths makes things a lot easier.
 	ex. require_once(LIBRARY_PATH . "Paginator.php")
 */
+
 defined("LIBRARY_PATH")
 	or define("LIBRARY_PATH", realpath(dirname(__FILE__) . '/library'));
 	

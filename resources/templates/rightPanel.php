@@ -1,9 +1,9 @@
 <div id="siteControls">
-	<ul class="categories">
+<!--	<ul class="categories">
 		<li>PHP</li>
 		<li>HTML</li>
 		<li>CSS</li>
-	</ul>
+	</ul>-->
 	<div class="ads">
 		<!-- ads code -->
 	</div>

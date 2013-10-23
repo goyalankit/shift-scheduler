@@ -1,0 +1,72 @@
+/* 
+    Document   : main.css
+    Created on : Oct 9, 2013, 3:53:52 PM
+    Author     : Ankit
+    Description:
+    
+    This style sheets sets the basic layout of the website.
+    
+*/
+
+root { 
+    display: block;    
+}
+
+body{
+    background-color: white;    
+}
+
+.schedule-day{
+  border-style: solid;
+  border-color:black;
+  border-width: 1px;
+  line-height: 2%;
+  margin: 1%;
+  padding: 1%;
+}
+
+.day{
+    float: left;
+    width: 4%;
+    margin-right: 4%;
+    margin-bottom: 1%;
+    border-right: black 1px solid;             
+}
+
+input{
+     outline: none;
+     position: relative;
+     bottom: 1px;
+}
+
+.shift1, .shift2, .shift3, .shift-header{
+    float: left;
+    margin-left: 10%;
+    display: inline;
+    line-height: 3%;
+    margin-bottom: 10px;        
+    
+    
+}
+
+.shift1{background-color: lightblue; position: relative;
+     bottom: 10px;}
+.shift2{background-color: lightcyan;position: relative;
+     bottom: 10px;}
+.shift3{background-color: 
+            lightcoral;position: relative;
+            bottom: 10px;}
+
+.shift-header{    
+    margin-left: 14%;  
+}
+
+.submit-button{
+    left: 20%;
+    
+}
+
+.error-message{
+    color: red;
+    /*visibility: hidden;*/
+}

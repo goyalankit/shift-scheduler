@@ -1,6 +1,6 @@
 <?php
-	require_once(realpath(dirname(__FILE__) . "/../config.php"));
-
+	require_once(realpath(dirname(__FILE__) . "/../config.php"));        
+        
 	function renderLayoutWithContentFile($contentFile, $variables = array())
 	{
 		$contentFileFullPath = TEMPLATES_PATH . "/" . $contentFile;
@@ -14,7 +14,7 @@
 				}
 			}
 		}
-	
+                
 		require_once(TEMPLATES_PATH . "/header.php");
 	
 		echo "<div id=\"container\">\n"
@@ -37,7 +37,7 @@
 	
 		// close container div
 		echo "</div>\n";
-	
+                
 		require_once(TEMPLATES_PATH . "/footer.php");
 	}
 ?>
