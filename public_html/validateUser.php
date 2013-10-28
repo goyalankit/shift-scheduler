@@ -14,8 +14,10 @@ if(empty($details)){
     header('Location: /public_html/');
        
 }else{    
-    print_r($details);
-    $_SESSION['uniqueId'] = $_POST['unique_id'];    
+    //print_r($details);
+    $_SESSION['uniqueId'] = $_POST['unique_id'];
+    $_SESSION['isuser'] = 'yes';
+    renderLayoutWithContentFile("isCorrectUser.php", $details);        
 }
 
 ?>

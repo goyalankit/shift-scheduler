@@ -9,6 +9,7 @@
 
 
 
+
 echo "Final schedule for candidate";
 
 print_r($variables);

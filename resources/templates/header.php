@@ -4,7 +4,10 @@
 <html lang="en">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">        
+        <style type="text/css" media="all">@import "css/timePicker.css";</style>
         <link rel="stylesheet" type="text/css" href="css/main.css" media="screen" />
+         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.js"></script>
+         <script type="text/javascript" src="js/jquery.timePicker.min.js"></script>
 	<title>Office of Survey and Research</title>
 </head>
 
