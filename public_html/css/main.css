@@ -62,11 +62,14 @@ input{
 }
 
 .submit-button{
-    left: 20%;
-    
+    left: 20%;    
 }
 
 .error-message{
     color: red;
     /*visibility: hidden;*/
+}
+
+.hidden-field{
+    display: none;
 }

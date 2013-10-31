@@ -9,9 +9,14 @@
         
  <?php
 
+ 
+ 
+ //TODO add shift id from database
+ 
 for ($i = 1; $i < 5; $i++) {
     echo '<div>
     <h3> Shift'.($i).'</h3>
+    <input type="text" class="hidden-field" value="shiftid">    
     Active <input type="checkbox" name="shift'.$i.'_active"/> <br/>
     from: <input type="text" id="time3" name="shift'.$i.'_from" size="10" value="08:00" /> 
     to: <input type="text" id="time4" name="shift'.$i.'_to" size="10" value="09:00" /><br/>
