@@ -7,3 +7,6 @@ create table shift (ShiftId INT NOT NULL AUTO_INCREMENT PRIMARY_KEY, ShiftFrom v
 //Create ShiftsAvailable Table
 create table shifts_available (YearWeekDay varchar(16) NOT NULL UNIQUE, Shift1 varchar(20), Shift2 varchar(20), Shift3 varchar(20), Shift4 varchar(20));
 
+
+
+create table user_shifts ( UserUniqueId varchar(20) NOT NULL, ShiftIds varchar(50), YearWeekDay varchar(20), YearWeek varchar(16))

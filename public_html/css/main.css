@@ -39,7 +39,7 @@ input{
      bottom: 1px;
 }
 
-.shift1, .shift2, .shift3, .shift-header{
+.shift1, .shift2, .shift3, .shift4, .shift-header{
     float: left;
     margin-left: 10%;
     display: inline;
@@ -51,10 +51,15 @@ input{
 
 .shift1{background-color: lightblue; position: relative;
      bottom: 10px;}
+
 .shift2{background-color: lightcyan;position: relative;
      bottom: 10px;}
+
 .shift3{background-color: 
             lightcoral;position: relative;
+            bottom: 10px;}
+
+.shift4{background-color: lightgreen;position: relative;
             bottom: 10px;}
 
 .shift-header{    

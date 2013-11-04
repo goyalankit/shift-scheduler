@@ -13,7 +13,5 @@ if(isset($_POST['isuser'])){
    }
 }
 
-$variables = getAvailableShiftsForCurrentWeek($dbh);            
-renderLayoutWithContentFile("schedule.php", $variables);
-
+header('Location: /public_html/generateSchedule.php');       
 ?>

@@ -12,18 +12,19 @@ $shift_data = array();
 for ($i = 0; $i < 5; $i++) {
     if(isset($_POST['shift'.$i.'_active']) == 'on'){
        date_default_timezone_set('UTC');
+       if(isset($_POST['shift'.$i.'_shiftid']) && $_POST['shift'.$i.'_shiftid'] != ""){
+            $shift_data["shift".$i]["shiftId"] = $_POST['shift'.$i.'_shiftid'];    
+       }               
+       
        $shift_data["shift".$i]["from"] = $_POST['shift'.$i.'_from'];
        $time = strtotime($_POST['shift'.$i.'_from']);
-       $newformat = date('Y-m-d H:i:s', $time);       
-       echo $newformat;
+       $newformat = date('Y-m-d H:i:s', $time);              
        echo "<br/>";
        $shift_data["shift".$i]["to"] = $_POST['shift'.$i.'_to'];
        $shift_data["shift".$i]["numberOfCandidates"] = $_POST['shift'.$i.'_numberOfCandidates'];      
     }    
 }
 
-//print_r($shift_data);
 addNewShift($shift_data, $dbh);
-
 
 ?>
