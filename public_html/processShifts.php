@@ -27,4 +27,6 @@ for ($i = 0; $i < 5; $i++) {
 
 addNewShift($shift_data, $dbh);
 
+echo "New Shifts Added Successfully!";
+
 ?>

@@ -7,28 +7,42 @@
  * 
  */
 
-
-
-
-echo "Final schedule for candidate";
-
-print_r($variables);
-
-/*foreach ($weekdays as $key => $value) {
-    echo "<div class='schedule-day'>
-            <div class='day'>" . $value ."</div>".                         
-            "<div class='shift1'>
-                <input type=checkbox name='".strtolower($value)."_".$key."0'>
-                    <label> ".$time["00"]."</label>
-             </div>".
-            "<div class='shift2'>
-                <input type=checkbox name='".strtolower($value)."_".$key."1'>
-                <label> ".$time["01"]."</label>
-            </div>".
-            "<div class='shift3'>
-                <input type=checkbox name='".strtolower($value)."_".$key."2'>
-                <label> ".$time["02"]."</label>
-            </div>".
-          "</div><br/>";
-}*/
+session_start();
 ?>
+
+<table cellspacing='0'>
+    <thead>
+        <tr>
+            <th>Day</th>
+            <th>Shift 1</th>
+            <th>Shift 2</th>
+            <th>Shift 3</th>
+            <th>Shift 4</th>			
+        </tr>
+    </thead>
+    <tbody>
+
+        <?php
+        print_r($variables);
+
+        foreach ($variables as $key => $value) {
+            $count = 3;
+            echo '<tr' . ($count % 2 == 0 ? "class='even'" : "") . '.>';
+            echo '<td>' . $key . '</td>';
+            $col = 1;
+
+            $previous = 0;
+            foreach ($value as $timevalue) {
+                while ($previous < $timevalue[0] - 1) {
+                    echo '<td></td>';
+                    $previous++;
+                }
+
+                $previous = $timevalue[0];
+                echo '<td>' . $timevalue[1] . '</td>';
+            }
+
+            echo '</tr>';
+        }
+        ?>
+</table>

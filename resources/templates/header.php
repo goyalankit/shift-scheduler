@@ -13,11 +13,12 @@
 
 <body>
 <div id="header">
-	<h1>Office of Survey and Research</h1>
+	<h1 style="display:inline;">Office of Survey and Research</h1>
+        <li style="float: right;  margin-top: 1%; margin-right: 2%;"><a href="logout.php" onclick="">Logout</a></li>
         <hr>
 	<ul class="nav global">
-<!--                <li><a href="#">Home</a></li>
-                <li><a href="#">Articles</a></li>
-                <li><a href="#">Portfolio</a></li>-->
+                
+                <!--<li><a href="#">Articles</a></li>-->
+                <!--<li><a href="#">Portfolio</a></li>-->
 	</ul>
 </div>

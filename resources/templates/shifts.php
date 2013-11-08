@@ -9,7 +9,7 @@
  <?php 
  
 
- print_r($variables);
+ //print_r($variables);
  
 for ($i = 1; $i < 5; $i++) {
     $shift_var = empty($variables["shift".$i]) ? NULL : $variables["shift".$i][0];        

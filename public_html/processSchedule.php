@@ -14,6 +14,7 @@ require_once(LIBRARY_PATH . "/entryManagement.php");
 
 enterScheduleForCandidate("ankitg", $_POST, $dbh);
 
+header('Location: /public_html/showSchedule.php');       
 //if processing was successfil. Render the final schedule and show it to candidate.
-renderLayoutWithContentFile("finalScheduleForCandidate.php", $_POST);
+
 ?>
