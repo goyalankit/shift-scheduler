@@ -12,7 +12,7 @@
  //print_r($variables);
  
 for ($i = 1; $i < 5; $i++) {
-    $shift_var = empty($variables["shift".$i]) ? NULL : $variables["shift".$i][0];        
+    $shift_var = empty($variables["shift".$i]) ? NULL : $variables["shift".$i]  ;                
     
     echo '<div>
     <h3> Shift'.($i).'</h3>

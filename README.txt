@@ -9,4 +9,7 @@ create table shifts_available (YearWeekDay varchar(16) NOT NULL UNIQUE, Shift1 v
 
 
 
-create table user_shifts ( UserUniqueId varchar(20) NOT NULL, ShiftIds varchar(100), YearWeekDay varchar(20), YearWeek varchar(16))
+old: create table user_shifts ( UserUniqueId varchar(20) NOT NULL, ShiftIds varchar(100), YearWeekDay varchar(20), YearWeek varchar(16))
+new: create table user_shifts ( UserUniqueId varchar(20) NOT NULL, ShiftId int, ShiftNumber int, Year int, Week int, Day varchar(20));
+
+create table shift_dates  (ShiftDate date, ShiftId int, Week int, Day varchar(20), ShiftNumber int, Year int);

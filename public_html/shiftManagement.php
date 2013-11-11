@@ -10,7 +10,7 @@
         
         if(isset($_POST['action']) && $_POST['action'] = 'add'){                       
             $variables = array();
-            $variables = shiftsForNextWeek($dbh);
+            $variables = shiftsForWeek($dbh, date("W") + 1, 2013);
             renderLayoutWithContentFile("shifts.php", $variables);            
         }else{
             $variables = array();
