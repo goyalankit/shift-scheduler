@@ -14,6 +14,8 @@
 for ($i = 1; $i < 5; $i++) {
     $shift_var = empty($variables["shift".$i]) ? NULL : $variables["shift".$i]  ;                
     
+    //print_r($shift_var);
+    
     echo '<div>
     <h3> Shift'.($i).'</h3>
     <input type="text" name="shift'.$i.'_shiftid" class="hidden-field" '.(is_null($shift_var) ? "" : "value=".$shift_var["ShiftId"]).'>    

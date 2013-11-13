@@ -14,19 +14,7 @@ require_once(LIBRARY_PATH . "/entryManagement.php");
 
 
 
-$variables = getSignedUpShiftsForUser("ankitg", date("W") + 1, $dbh);
+$variables = getSignedUpShiftsForUser("ankitg", date("W") + 1, date('Y'), $dbh);
 
-$shift_details = array();
-
-foreach ($variables as $key => $value) {
-    $replaced = str_replace($value["YearWeek"],"" ,$value["YearWeekDay"]);        
-    
-    if(!isset($shift_details[$replaced])){                      
-        $shift_details[$replaced] = unserialize($value["ShiftIds"]);     
-    }    
-}
-
-$final_values = getTimeForUserShifts($shift_details, $dbh);
-
-renderLayoutWithContentFile("finalScheduleForCandidate.php", $final_values);
+renderLayoutWithContentFile("finalScheduleForCandidate.php", $variables);
 ?>

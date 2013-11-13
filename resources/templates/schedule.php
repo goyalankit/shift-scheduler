@@ -45,12 +45,12 @@ foreach ($weekdays as $key => $value) {
                 <input type='text' name='shift3_shiftid' class='hidden-field' value='".$time["shift3"]["ShiftId"]."'>    
                 <input type=checkbox name='".strtolower($value)."_2'>
                 <label> ".$time["shift3"]["ShiftFrom"]."-".$time["shift3"]["ShiftTo"]."</label>
-            </div>".
+            </div>".(isset($time["shift4"]) ? 
             "<div class='shift4'>
                 <input type='text' name='shift4_shiftid' class='hidden-field' value='".$time["shift4"]["ShiftId"]."'>    
                 <input type=checkbox name='".strtolower($value)."_3'>
                 <label> ".$time["shift4"]["ShiftFrom"]."-".$time["shift4"]["ShiftTo"]."</label>
-            </div>".
+            </div>" : "").
           "</div><br/>";
 }
 ?>
