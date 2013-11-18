@@ -87,7 +87,7 @@ function checkIfShiftAlreadyExists($data, $dbh){
 }
 
 function getShiftsForUser($username, $week, $year, $dbh){
-    $sql = "SELECT * FROM user_shifts where UserUniqueId=:uniqueId and Week=:Week and Year=:Year";
+    $sql = "SELECT * FROM user_shifts where UserUniqueId=:uniqueId and Week=:Week and Year=:Year and active='true'";
     
     $data['uniqueId'] = $username;
     $data['Year'] = $year;
@@ -149,7 +149,9 @@ function getSignedUpShiftsForUser($username, $week, $year, $dbh) {
 
 function addNewShift($values, $dbh) {
     date_default_timezone_set('UTC');
-
+    $weekNumber = date("W") + 1;    
+    deactivateNewShifts($weekNumber, date('Y'), $dbh);
+    
     foreach ($values as $shiftNumber => $value) {
         $data['shiftFrom'] = trim($value['from']);
         $data['shiftTo'] = trim($value['to']);
@@ -167,6 +169,13 @@ function addNewShift($values, $dbh) {
             addShiftToAvailableShiftsNew($shiftId, $shiftNumber, $data['ShiftDate'], $dbh);
         }
     }
+}
+
+function deactivateNewShifts($week, $year, $dbh){    
+    $sql = "update shift as sh JOIN shift_dates as sd on (sd.ShiftId = sh.ShiftId and Week='".$week."' and Year='".$year."') set sh.Active='false';";
+    $sth = $dbh->prepare($sql);
+    $success = $sth->execute();
+    $details = $sth->fetchAll();  
 }
 
 function addShiftToAvailableShiftsNew($shiftId, $shiftNumber, $date, $dbh) {
@@ -242,6 +251,18 @@ function getNextDay($date) {
 
 
 function shiftsForWeek($dbh, $weekNumber, $year) {         
+    $sql = "select * from shift_dates where Week=:Week and Year=:Year;";
+    $sth = $dbh->prepare($sql);
+    $data['Week'] = $weekNumber;
+    $data['Year'] = $year;
+    
+    $success = $sth->execute($data);
+    $details = $sth->fetchAll();                
+    if(empty($details)){
+        echo "EMPTY FOR WEEK ".$weekNumber;
+        return array();
+    }
+    
     $sql = "select * from shift_dates as sd LEFT JOIN shift as s on (sd.Week=:Week and sd.Year=:Year and sd.ShiftId = s.ShiftId);";
     $sth = $dbh->prepare($sql);
     $data['Week'] = $weekNumber;
@@ -249,17 +270,17 @@ function shiftsForWeek($dbh, $weekNumber, $year) {
     
     $success = $sth->execute($data);
     $details = $sth->fetchAll();                
-    
+        
     $shift_details = array();    
-    if(!empty($details)){        
-        foreach ($details as $key => $value) {                                                                        
+    if(!empty($details)){                
+        foreach ($details as $key => $value) {                                                                                                                       
             $shift_details["shift".$value["ShiftNumber"]]["ShiftId"] = $value["ShiftId"];
             $shift_details["shift".$value["ShiftNumber"]]["ShiftFrom"] = $value["ShiftFrom"];
             $shift_details["shift".$value["ShiftNumber"]]["ShiftTo"] = $value["ShiftTo"];
-            $shift_details["shift".$value["ShiftNumber"]]["NumberOfCandidates"] = $value["NumberOfCandidates"];                                
+            $shift_details["shift".$value["ShiftNumber"]]["NumberOfCandidates"] = $value["NumberOfCandidates"];                
+            $shift_details["shift".$value["ShiftNumber"]]["Active"] = $value["Active"];                
         }        
-    }
-    
+    }        
     return $shift_details;
 }
 ?>
