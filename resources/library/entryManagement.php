@@ -7,6 +7,7 @@
  */
 
 date_default_timezone_set('UTC');
+$debugging = TRUE;
 
 
 /*
@@ -24,6 +25,22 @@ function validateUser($uniqueId, $dbh) {
     $success = $sth->execute($data);
     $details = $sth->fetchAll();
     return $details;
+}
+
+function createOrUpdateUser($data, $dbh){    
+    $user_data = validateUser($data['UniqueId'], $dbh);
+    if(empty($user_data)){
+        $sql = "INSERT INTO USER (UniqueId, FirstName, LastName, NickName, Active) VALUES (:UniqueId, :FirstName, :LastName, :NickName, :Active)";
+        $sth = $dbh->prepare($sql);
+        $success = $sth->execute($data);    
+    }else{
+        $sql = "UPDATE USER set FirstName=:FirstName, LastName=:LastName, NickName=:NickName, Active=:Active where UniqueId=:UniqueId";
+        $sth = $dbh->prepare($sql);
+        $success = $sth->execute($data);            
+    }
+    if (!$success && $debugging) {
+      print_r($sth->errorInfo());
+    }            
 }
 
 function enterScheduleForCandidate($username, $data, $dbh) {   
@@ -87,16 +104,15 @@ function checkIfShiftAlreadyExists($data, $dbh){
 }
 
 function getShiftsForUser($username, $week, $year, $dbh){
-    $sql = "SELECT * FROM user_shifts where UserUniqueId=:uniqueId and Week=:Week and Year=:Year and active='true'";
+    $sql = "SELECT * FROM user_shifts where UserUniqueId=:uniqueId and Week=:Week and Year=:Year and active='true'";       
     
     $data['uniqueId'] = $username;
     $data['Year'] = $year;
-    $data['Week'] = $week;
-    
+    $data['Week'] = $week;    
     $sth = $dbh->prepare($sql);
     $success = $sth->execute($data);
     $details = $sth->fetchAll();
-
+    
     return $details;     
 }
 

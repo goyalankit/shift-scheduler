@@ -7,7 +7,7 @@
  * 
  */
 
-session_start();
+
 ?>
 
 <table cellspacing='0'>

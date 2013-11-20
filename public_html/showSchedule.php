@@ -6,6 +6,8 @@
  * 
  */
 
+session_start();
+
 require_once(realpath(dirname(__FILE__) . "/../resources/config.php"));
 require_once(LIBRARY_PATH . "/templateFunctions.php");
 require_once(LIBRARY_PATH . "/connection_open.php");
@@ -14,7 +16,7 @@ require_once(LIBRARY_PATH . "/entryManagement.php");
 
 
 
-$variables = getSignedUpShiftsForUser("ankitg", date("W") + 1, date('Y'), $dbh);
+$variables = getSignedUpShiftsForUser($_SESSION['uniqueId'], date("W") + 1, date('Y'), $dbh);
 
 renderLayoutWithContentFile("finalScheduleForCandidate.php", $variables);
 ?>
