@@ -1,32 +1,27 @@
-
 <style>
-    
-/* LIST #2 */
-#list2 { width:320px; }
-#list2 ol{ font-style:italic; font-family:Georgia, Times, serif; font-size:24px; color:#bfe1f1;  }
-h3{ font-family:Georgia, Times, serif; font-size:24px;;  }
-#list2 ol li { }
-#list2 ol li p { padding:8px; font-style:normal; font-family:Arial; font-size:13px; color:#eee; border-left: 1px solid #999; }
-#list2 ol li p em { display:block; }
-#list2 ol li p em a { text-decoration:none; color:#000; }
-#list2 ol li p em a:hover { text-decoration:underline; color:#000; }
-
+    ul {max-width: 300px;}
+    li {color: black; border: black 2px;}
 </style>
 
+<div class="page-header">
 <h3>Admin Control Panel</h3>
-<div id="list2">
-   <ol>
-      <li><p><em><a href="userManagement.php">Add a new user</a></em> </p></li>
-      <li><em><form style='margin: 0; padding: 0' action="searchAndEditUser.php" method="POST">  
-                      <input style='display:inline;' 
-            type='text' name="UniqueId"
-            />  
-     <input style='display:inline;' 
-            type='submit' 
-            value='edit user'/>  
-</form></em></li>
-      <li><p><em><a href="shiftManagement.php">Add/Edit Next Week Shifts</a></em> </p></li>
-      <li><p><em><a href="/scheduleManagement.php">Check Current Week's Schedule</a></em> </p></li>
-          
-   </ol>
 </div>
+
+
+
+
+<ul class="nav nav-pills nav-stacked">
+     <li><a href="userManagement.php">Add a new user</a></li><br/>
+     <li>  <form type="submit" action="searchAndEditUser.php" method='post' >
+    <div class="input-group">
+        <input name="UniqueId"  type="text" class="form-control" placeholder="Enter username">      
+      <span class="input-group-btn">
+        <button class="btn btn-default" type="submit">Edit User</button>
+      </span>
+    </div><!-- /input-group --> 
+</form></li><br/>
+     <li><a href="shiftManagement.php">Add/Edit Next Week Shifts</a></li><br/>
+     <li><a href="shiftManagement.php">Check Current Week's Schedule</a></li><br/>
+      
+
+</ul>

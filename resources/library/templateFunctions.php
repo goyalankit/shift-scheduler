@@ -15,9 +15,9 @@
 			}
 		}
                 
-		require_once(TEMPLATES_PATH . "/header.php");
+		require_once(TEMPLATES_PATH . "/bootheader.php");
 	
-		echo "<div id=\"container\">\n"
+		echo "<div id=\"container\" class=\"container\">\n"
 		   . "\t<div id=\"content\">\n";
 	
 		if (file_exists($contentFileFullPath)) {

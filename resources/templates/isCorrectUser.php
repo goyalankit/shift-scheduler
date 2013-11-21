@@ -1,5 +1,5 @@
 <?php
-session_start();
+
 if(isset($_POST['isuser'])){    
    if($_POST['isuser'] == 'yes') {
        echo "Awesome";
@@ -10,15 +10,15 @@ if(isset($_POST['isuser'])){
 }
 
 $details = $variables[0];
-
-echo "Are you? <br/>";
-echo "First Name: ".$details['FirstName']." ".$details['LastName'];
-echo "<br/>";   
 ?>
 
-<br/>
 <form method='post' action='processIsCorrectUser.php'>    
-    <input type='submit' name='isuser' value='yes'/>
-    <input type='submit' name='isuser' value='no'/>        
+    
+    <div class="jumbotron">
+  <h1>Are you <?php print $details['FirstName']?> <? print $details['LastName']?> ? </h1>
+    <div class="btn-group">
+        <br/>
+    <button class="btn btn-primary btn-lg" role="button" type="submit" value='yes'> Yes </button>
+    <button class="btn btn-danger btn-lg" role="button" type="submit" value ='no'> No </button>
+    </div>
 </form>
-<br/>
