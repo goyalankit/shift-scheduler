@@ -10,7 +10,7 @@
 
 ?>
 
-<table cellspacing='0'>
+<table class="table table-striped table-hover">    
     <thead>
         <tr>
             <th>Date</th>
@@ -23,28 +23,8 @@
         <?php
         //print_r($variables);
         foreach ($variables as $key => $value) {
-            echo "<tr><td>".$value["ShiftDate"]."</td> <td>".ucwords($value["Day"])."</td><td> ".$value["ShiftFrom"]."-".$value["ShiftTo"]."<td></tr>";
+            echo "<tr><td>".$value["ShiftDate"]."</td> <td>".ucwords($value["Day"])."</td><td> ".$value["ShiftFrom"]."-".$value["ShiftTo"]."<td></tr>";            
         }
-        
-        
-//        foreach ($variables as $key => $value) {
-//            $count = 3;
-//            echo '<tr' . ($count % 2 == 0 ? "class='even'" : "") . '.>';
-//            echo '<td>' . $key . '</td>';
-//            $col = 1;
-//
-//            $previous = 0;
-//            foreach ($value as $timevalue) {
-//                while ($previous < $timevalue[0] - 1) {
-//                    echo '<td></td>';
-//                    $previous++;
-//                }
-//
-//                $previous = $timevalue[0];
-//                echo '<td>' . $timevalue[1] . '</td>';
-//            }
-//
-//            echo '</tr>';
-//        }
-        ?>
+        ?>                
 </table>
+<a href="user_home.php" class="btn btn-info btn-large"><i class="icon-white icon-arrow-left"></i> back</a>

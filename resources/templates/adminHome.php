@@ -1,3 +1,17 @@
+<?php
+    if(isset($_SESSION['errors'])){
+        echo '<div class="alert alert-danger .alert-dismissable">
+            '.$_SESSION['errors'].'
+        </div>';
+        unset ($_SESSION['errors']);    
+    }elseif (isset($_SESSION['success'])) {
+        echo '<div class="alert alert-success .alert-dismissable">
+            '.$_SESSION['success'].'
+        </div>';
+        unset ($_SESSION['success']); 
+    }
+?>
+
 <style>
     ul {max-width: 300px;}
     li {color: black; border: black 2px;}

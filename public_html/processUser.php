@@ -1,4 +1,5 @@
 <?php
+session_start();
 
 if(empty($_POST) || !isset($_POST)){
     header("/admin");
@@ -28,8 +29,14 @@ foreach ($field_names as $key => $value) {
         print_r($errors);
     }
     
-    createOrUpdateUser($data, $dbh);
-    echo "user created/updated successfully. <a href='admin.php'>click to go back </a>";
+    $result = createOrUpdateUser($data, $dbh);
+    if (strpos($result,'ERROR') !== false) {
+        $_SESSION['error'] = $result;
+    }else{
+        $_SESSION['success'] = $result;
+    }
+    
+    header('Location: admin.php');
     
 
 ?>

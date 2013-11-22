@@ -40,6 +40,9 @@ function createOrUpdateUser($data, $dbh){
     }
     if (!$success && $debugging) {
       print_r($sth->errorInfo());
+      return "ERROR: Somthing went wrong. Please contact system administrator.";
+    }else{
+      return "INFO: User Created/Updated successfully!";
     }            
 }
 
