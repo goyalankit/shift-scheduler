@@ -14,16 +14,16 @@ if(isset($_SESSION['errors'])){
     unset($_SESSION['errors']);
     session_destroy();
 } elseif (isset($_SESSION['uniqueId'])) {
-    header("Location: validateUser.php");
+    header("Location: validateUser.php");    
 }
 ?>        
 
-<form type="submit" action="validateUser.php" method='post' >
+<form type="submit" action="validateUser.php" method='post'>
  <div class="col-lg-6">
     <div class="input-group">
         <input name="unique_id" type="text" class="form-control" placeholder="Enter you username">      
       <span class="input-group-btn">
-        <button class="btn btn-default" type="submit">Go!</button>
+        <button class="btn btn-success" type="submit">Go!</button>
       </span>
     </div><!-- /input-group -->
   </div><!-- /.col-lg-6 -->

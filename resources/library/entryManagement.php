@@ -7,8 +7,7 @@
  */
 
 date_default_timezone_set('UTC');
-$debugging = TRUE;
-
+$debugging = TRUE; 
 
 /*
  * 
@@ -282,7 +281,7 @@ function shiftsForWeek($dbh, $weekNumber, $year) {
         return array();
     }
     
-    $sql = "select * from shift_dates as sd LEFT JOIN shift as s on (sd.Week=:Week and sd.Year=:Year and sd.ShiftId = s.ShiftId);";
+    $sql = "select * from shift_dates as sd JOIN shift as s on (sd.Week=:Week and sd.Year=:Year and sd.ShiftId = s.ShiftId and s.Active='true');";
     $sth = $dbh->prepare($sql);
     $data['Week'] = $weekNumber;
     $data['Year'] = $year;
@@ -302,4 +301,48 @@ function shiftsForWeek($dbh, $weekNumber, $year) {
     }        
     return $shift_details;
 }
+
+function verify_admin($dbh, $username, $password){
+    $sql = "select * from admin where username=:username and password=:password";
+    $sth = $dbh->prepare($sql);
+    $data['username'] = $username;
+    $data['password'] = md5($password);
+    
+    
+    $success = $sth->execute($data);
+    $details = $sth->fetchAll();                
+    
+    if(empty($details))
+        return false;
+    else
+        return true;
+        
+}
+
+function getShiftData($week, $dbh){
+    $sql = "select UserUniqueId, s.ShiftFrom, s.ShiftTo, us.ShiftDate from user_shifts as us JOIN shift as s where Week=:Week and s.ShiftId = us.ShiftId";
+    $sth = $dbh->prepare($sql);
+    $data['Week'] = $week;
+    
+    $success = $sth->execute($data);
+    $sth->setFetchMode(PDO::FETCH_ASSOC);
+    
+    
+    $details = $sth->fetchAll();                               
+            
+    $postFile = "/data/shiftdata-".$week.".csv";
+    $filename = $_SERVER['DOCUMENT_ROOT'] . $postFile;
+    $fp = fopen($filename, 'w');
+    if(empty($details))
+        return "";
+    fputcsv($fp, array_keys($details[0]));    
+    foreach ($details as $key => $fields) {
+        fputcsv($fp, $fields);
+    } 
+    
+    fclose($fp);
+        
+    return $postFile;
+}
+
 ?>

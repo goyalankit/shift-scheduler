@@ -23,7 +23,7 @@
         <ul class="nav nav-pills pull-right">
             <li class="active"><a href="<?php isset($_SESSION['uniqueId']) ? print "user_home.php" : "./" ?>">Home</a></li>
           <li <?php !isset($_SESSION['uniqueId']) ? print "class='hidden'" : print ""  ?> ><a href="showSchedule.php">Schedule</a></li>
-          <li <?php !isset($_SESSION['uniqueId']) ? print "class='hidden'" : print ""  ?>><a href="logout.php">Log out</a></li>
+          <li <?php  (!isset($_SESSION['uniqueId']) && !isset($_SESSION['isadmin'])) ? print "class='hidden'" : print ""  ?>><a href="logout.php">Log out</a></li>
         </ul>
         <h3 class="text-muted">Office of Survey and Research</h3>
       </div>

@@ -77,6 +77,7 @@ for ($i = 1; $i < 5; $i++) {
 <div class="form-group">
     <div class="col-sm-offset-2 col-sm-10">
       <button type="submit" class="btn btn-primary">Sign in</button>
+      <a href="processAdminLogin.php" class="btn btn-info btn-large"><i class="icon-white icon-arrow-left"></i> back</a>
     </div>
   </div>   <br/> 
 

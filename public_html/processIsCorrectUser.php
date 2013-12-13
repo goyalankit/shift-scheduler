@@ -6,7 +6,7 @@ require_once(LIBRARY_PATH . "/templateFunctions.php");
 require_once(LIBRARY_PATH . "/connection_open.php");
 require_once(LIBRARY_PATH . "/entryManagement.php");
 
-print_r($_POST);
+//print_r($_POST);
 
 
 if(isset($_POST['isuser'])){    

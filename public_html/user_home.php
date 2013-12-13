@@ -11,7 +11,7 @@ require_once(LIBRARY_PATH . "/entryManagement.php");
 if(!isset($_SESSION['uniqueId'])){
     header('Location: /public_html/');
 }
-
+    
 
 renderLayoutWithContentFile("user.php");
 ?>

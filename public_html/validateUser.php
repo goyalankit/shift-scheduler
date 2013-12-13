@@ -10,10 +10,11 @@ require_once(LIBRARY_PATH . "/entryManagement.php");
 $details = validateUser($_POST['unique_id'], $dbh);
 
 if(empty($details)){        
+    print_r($_POST);
     $_SESSION['errors'] = "invalid id";
     header('Location: /public_html/');       
 }else{    
-    //print_r($details);
+    
     $_SESSION['uniqueId'] = $_POST['unique_id'];    
     renderLayoutWithContentFile("isCorrectUser.php", $details);        
 }
