@@ -6,8 +6,6 @@
  * All the data is passed from processSchedule.php
  * 
  */
-
-
 ?>
 
 <table class="table table-striped table-hover">    
@@ -20,11 +18,11 @@
     </thead>
     <tbody>
 
-        <?php
-        //print_r($variables);
-        foreach ($variables as $key => $value) {
-            echo "<tr><td>".$value["ShiftDate"]."</td> <td>".ucwords($value["Day"])."</td><td> ".$value["ShiftFrom"]."-".$value["ShiftTo"]."<td></tr>";            
-        }
-        ?>                
+<?php
+//print_r($variables);
+foreach ($variables as $key => $value) {
+    echo "<tr><td>" . $value["ShiftDate"] . "</td> <td>" . ucwords($value["Day"]) . "</td><td> " . $value["ShiftFrom"] . "-" . $value["ShiftTo"] . "<td></tr>";
+}
+?>                
 </table>
 <a href="user_home.php" class="btn btn-info btn-large"><i class="icon-white icon-arrow-left"></i> back</a>

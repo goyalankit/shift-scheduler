@@ -1,4 +1,5 @@
 <?php
+
 /* Author: Ankit Goyal
  * Date: 11/04/2013
  *
@@ -8,8 +9,8 @@
 
 session_start();
 
-if(!isset($_SESSION['uniqueId'])){       
-   header('Location: /public_html/');   
+if (!isset($_SESSION['uniqueId'])) {
+    header('Location: /public_html/');
 }
 
 require_once(realpath(dirname(__FILE__) . "/../resources/config.php"));

@@ -7,7 +7,7 @@
  */
 
 date_default_timezone_set('UTC');
-$debugging = TRUE; 
+$debugging = TRUE;
 
 /*
  * 
@@ -26,28 +26,28 @@ function validateUser($uniqueId, $dbh) {
     return $details;
 }
 
-function createOrUpdateUser($data, $dbh){    
+function createOrUpdateUser($data, $dbh) {
     $user_data = validateUser($data['UniqueId'], $dbh);
-    if(empty($user_data)){
+    if (empty($user_data)) {
         $sql = "INSERT INTO USER (UniqueId, FirstName, LastName, NickName, Active) VALUES (:UniqueId, :FirstName, :LastName, :NickName, :Active)";
         $sth = $dbh->prepare($sql);
-        $success = $sth->execute($data);    
-    }else{
+        $success = $sth->execute($data);
+    } else {
         $sql = "UPDATE USER set FirstName=:FirstName, LastName=:LastName, NickName=:NickName, Active=:Active where UniqueId=:UniqueId";
         $sth = $dbh->prepare($sql);
-        $success = $sth->execute($data);            
+        $success = $sth->execute($data);
     }
     if (!$success && $debugging) {
-      print_r($sth->errorInfo());
-      return "ERROR: Somthing went wrong. Please contact system administrator.";
-    }else{
-      return "INFO: User Created/Updated successfully!";
-    }            
+        print_r($sth->errorInfo());
+        return "ERROR: Somthing went wrong. Please contact system administrator.";
+    } else {
+        return "INFO: User Created/Updated successfully!";
+    }
 }
 
-function enterScheduleForCandidate($username, $data, $dbh) {   
-    $week = date("W") + 1;            
-    
+function enterScheduleForCandidate($username, $data, $dbh) {
+    $week = date("W") + 1;
+
     $shift_ids = array();
     foreach ($data as $key => $value) {
         $s = explode("_", $key);
@@ -55,77 +55,75 @@ function enterScheduleForCandidate($username, $data, $dbh) {
             $shift_ids[$s[0]] = $value;
             unset($data[$key]);
         }
-    }    
+    }
     unset($s);
-        
+
     //Deactivating all the shifts for that week
-    $previous_shifts = deactivateShifts($username, $week, date('Y'), $dbh);    
+    $previous_shifts = deactivateShifts($username, $week, date('Y'), $dbh);
 
     foreach ($data as $shift => $shiftId) {
         $data1 = array();
         $s = explode("_", $shift);
         $data1["Day"] = $s[0];
-        $data1["shiftNumber"] = $s[1] + 1;                        
-        $data1["ShiftDate"] = date('Y-m-d', strtotime("next week ".$s[0]));            
+        $data1["shiftNumber"] = $s[1] + 1;
+        $data1["ShiftDate"] = date('Y-m-d', strtotime("next week " . $s[0]));
         $data1["Year"] = date('Y');
-        $data1["Week"] = $week;            
+        $data1["Week"] = $week;
         $data1["uniqueId"] = $username;
-        if(checkIfShiftAlreadyExists($data1, $dbh)){                
-                makeShiftActive($data1, $dbh);      
-                continue;
+        if (checkIfShiftAlreadyExists($data1, $dbh)) {
+            makeShiftActive($data1, $dbh);
+            continue;
         }
-        $data1["ShiftId"] = $shift_ids["shift".($s[1]+1)];            
+        $data1["ShiftId"] = $shift_ids["shift" . ($s[1] + 1)];
         insertUserShift($data1, $dbh);
-    }           
+    }
 }
 
-function deactivateShifts($username, $week, $year, $dbh){
-    $sql = "UPDATE user_shifts set active='false' where UserUniqueId='".$username."' and Week='".$week."' and Year='".$year."'";
+function deactivateShifts($username, $week, $year, $dbh) {
+    $sql = "UPDATE user_shifts set active='false' where UserUniqueId='" . $username . "' and Week='" . $week . "' and Year='" . $year . "'";
     $sth = $dbh->prepare($sql);
     $success = $sth->execute();
-    $details = $sth->fetchAll();  
+    $details = $sth->fetchAll();
 }
 
-function makeShiftActive($data, $dbh){
+function makeShiftActive($data, $dbh) {
     $sql = "UPDATE user_shifts set active='true' where UserUniqueId=:uniqueId and Week=:Week and Year=:Year and ShiftNumber=:shiftNumber and Day=:Day and ShiftDate=:ShiftDate";
     $sth = $dbh->prepare($sql);
     $success = $sth->execute($data);
-    $details = $sth->fetchAll();  
-    
+    $details = $sth->fetchAll();
 }
 
-function checkIfShiftAlreadyExists($data, $dbh){
+function checkIfShiftAlreadyExists($data, $dbh) {
     $sql = "SELECT * FROM user_shifts where UserUniqueId=:uniqueId and Week=:Week and Year=:Year and ShiftNumber=:shiftNumber and Day=:Day and ShiftDate=:ShiftDate";
     $sth = $dbh->prepare($sql);
     $success = $sth->execute($data);
-    $details = $sth->fetchAll();  
-    if(empty($details))
+    $details = $sth->fetchAll();
+    if (empty($details))
         return false;
     else
         return true;
 }
 
-function getShiftsForUser($username, $week, $year, $dbh){
-    $sql = "SELECT * FROM user_shifts where UserUniqueId=:uniqueId and Week=:Week and Year=:Year and active='true'";       
-    
+function getShiftsForUser($username, $week, $year, $dbh) {
+    $sql = "SELECT * FROM user_shifts where UserUniqueId=:uniqueId and Week=:Week and Year=:Year and active='true'";
+
     $data['uniqueId'] = $username;
     $data['Year'] = $year;
-    $data['Week'] = $week;    
+    $data['Week'] = $week;
     $sth = $dbh->prepare($sql);
     $success = $sth->execute($data);
     $details = $sth->fetchAll();
-    
-    return $details;     
+
+    return $details;
 }
 
 function insertUserShift($data, $dbh) {
     $sql = "INSERT INTO user_shifts (UserUniqueId, ShiftId, ShiftNumber, Year, Week, Day, ShiftDate) VALUES(:uniqueId, :ShiftId, :shiftNumber, :Year, :Week, :Day, :ShiftDate);";
     $sth = $dbh->prepare($sql);
     $success = $sth->execute($data);
-   if (!$success) {
-      print_r($sth->errorInfo());
-    }    
-    
+    if (!$success) {
+        print_r($sth->errorInfo());
+    }
 }
 
 function updateUserShift($data, $dbh) {
@@ -137,10 +135,9 @@ function updateUserShift($data, $dbh) {
     }
 }
 
-
 function getSignedUpShiftsForUser($username, $week, $year, $dbh) {
     $sql = "SELECT usht.ShiftNumber, usht.ShiftDate, usht.Day, sht.ShiftFrom, sht.ShiftTo FROM user_shifts as usht JOIN shift as sht on (sht.ShiftId = usht.ShiftId) where Week=:Week and Year=:Year and usht.active='true' and UserUniqueId=:uniqueId ORDER BY usht.ShiftDate;";
-    
+
     $sth = $dbh->prepare($sql);
     $data['uniqueId'] = $username;
     $data['Year'] = $year;
@@ -151,7 +148,6 @@ function getSignedUpShiftsForUser($username, $week, $year, $dbh) {
 
     return $details;
 }
-
 
 /*
  * 
@@ -167,15 +163,15 @@ function getSignedUpShiftsForUser($username, $week, $year, $dbh) {
 
 function addNewShift($values, $dbh) {
     date_default_timezone_set('UTC');
-    $weekNumber = date("W") + 1;    
+    $weekNumber = date("W") + 1;
     deactivateNewShifts($weekNumber, date('Y'), $dbh);
-    
+
     foreach ($values as $shiftNumber => $value) {
         $data['shiftFrom'] = trim($value['from']);
         $data['shiftTo'] = trim($value['to']);
         $data['numberOfCandidates'] = trim($value['numberOfCandidates']);
         $data['active'] = 'true';
-        
+
         if (isset($value['shiftId'])) {
             updateShift($value['shiftId'], $data, $dbh);
             continue;
@@ -189,11 +185,11 @@ function addNewShift($values, $dbh) {
     }
 }
 
-function deactivateNewShifts($week, $year, $dbh){    
-    $sql = "update shift as sh JOIN shift_dates as sd on (sd.ShiftId = sh.ShiftId and Week='".$week."' and Year='".$year."') set sh.Active='false';";
+function deactivateNewShifts($week, $year, $dbh) {
+    $sql = "update shift as sh JOIN shift_dates as sd on (sd.ShiftId = sh.ShiftId and Week='" . $week . "' and Year='" . $year . "') set sh.Active='false';";
     $sth = $dbh->prepare($sql);
     $success = $sth->execute();
-    $details = $sth->fetchAll();  
+    $details = $sth->fetchAll();
 }
 
 function addShiftToAvailableShiftsNew($shiftId, $shiftNumber, $date, $dbh) {
@@ -202,23 +198,22 @@ function addShiftToAvailableShiftsNew($shiftId, $shiftNumber, $date, $dbh) {
     $dt = new DateTime($date);
     $day = strtolower($dt->format('l'));
     $year = strtolower($dt->format('Y'));
-    
+
     $sql = "INSERT INTO shift_dates (ShiftDate, ShiftId, Week, Day, ShiftNumber, Year) VALUES(:ShiftDate, :ShiftId, :Week, :Day, :ShiftNumber, :Year);";
-        
+
     $sth = $dbh->prepare($sql);
     $data['ShiftDate'] = $date;
     $data['ShiftId'] = $shiftId;
     $data['Week'] = $weekNumber;
-    $data['Day'] = $day;    
+    $data['Day'] = $day;
     $data['Year'] = $year;
-    preg_match_all('!\d!', $shiftNumber, $matches);    
+    preg_match_all('!\d!', $shiftNumber, $matches);
     $data['ShiftNumber'] = $matches[0][0];
-    $success = $sth->execute($data);    
+    $success = $sth->execute($data);
     if (!$success) {
-      print_r($sth->errorInfo());
+        print_r($sth->errorInfo());
     }
 }
-
 
 function fourShiftsAlreadyPresentForDate($date, $dbh) {
     $sql = "SELECT * FROM SHIFT where ShiftDate=:ShiftDate";
@@ -267,81 +262,79 @@ function getNextDay($date) {
     return date('Y-m-d', strtotime('+1 day', strtotime($date)));
 }
 
-
-function shiftsForWeek($dbh, $weekNumber, $year) {         
+function shiftsForWeek($dbh, $weekNumber, $year) {
     $sql = "select * from shift_dates where Week=:Week and Year=:Year;";
     $sth = $dbh->prepare($sql);
     $data['Week'] = $weekNumber;
     $data['Year'] = $year;
-    
+
     $success = $sth->execute($data);
-    $details = $sth->fetchAll();                
-    if(empty($details)){
-        echo "EMPTY FOR WEEK ".$weekNumber;
+    $details = $sth->fetchAll();
+    if (empty($details)) {
+        echo "EMPTY FOR WEEK " . $weekNumber;
         return array();
     }
-    
+
     $sql = "select * from shift_dates as sd JOIN shift as s on (sd.Week=:Week and sd.Year=:Year and sd.ShiftId = s.ShiftId and s.Active='true');";
     $sth = $dbh->prepare($sql);
     $data['Week'] = $weekNumber;
     $data['Year'] = $year;
-    
+
     $success = $sth->execute($data);
-    $details = $sth->fetchAll();                
-        
-    $shift_details = array();    
-    if(!empty($details)){                
-        foreach ($details as $key => $value) {                                                                                                                       
-            $shift_details["shift".$value["ShiftNumber"]]["ShiftId"] = $value["ShiftId"];
-            $shift_details["shift".$value["ShiftNumber"]]["ShiftFrom"] = $value["ShiftFrom"];
-            $shift_details["shift".$value["ShiftNumber"]]["ShiftTo"] = $value["ShiftTo"];
-            $shift_details["shift".$value["ShiftNumber"]]["NumberOfCandidates"] = $value["NumberOfCandidates"];                
-            $shift_details["shift".$value["ShiftNumber"]]["Active"] = $value["Active"];                
-        }        
-    }        
+    $details = $sth->fetchAll();
+
+    $shift_details = array();
+    if (!empty($details)) {
+        foreach ($details as $key => $value) {
+            $shift_details["shift" . $value["ShiftNumber"]]["ShiftId"] = $value["ShiftId"];
+            $shift_details["shift" . $value["ShiftNumber"]]["ShiftFrom"] = $value["ShiftFrom"];
+            $shift_details["shift" . $value["ShiftNumber"]]["ShiftTo"] = $value["ShiftTo"];
+            $shift_details["shift" . $value["ShiftNumber"]]["NumberOfCandidates"] = $value["NumberOfCandidates"];
+            $shift_details["shift" . $value["ShiftNumber"]]["Active"] = $value["Active"];
+        }
+    }
     return $shift_details;
 }
 
-function verify_admin($dbh, $username, $password){
+function verify_admin($dbh, $username, $password) {
     $sql = "select * from admin where username=:username and password=:password";
     $sth = $dbh->prepare($sql);
     $data['username'] = $username;
     $data['password'] = md5($password);
-    
-    
+
+
     $success = $sth->execute($data);
-    $details = $sth->fetchAll();                
-    
-    if(empty($details))
+    $details = $sth->fetchAll();
+
+    if (empty($details))
         return false;
     else
         return true;
-        
 }
 
-function getShiftData($week, $dbh){
+function getShiftData($week, $dbh) {
     $sql = "select UserUniqueId, s.ShiftFrom, s.ShiftTo, us.ShiftDate from user_shifts as us JOIN shift as s where Week=:Week and s.ShiftId = us.ShiftId";
     $sth = $dbh->prepare($sql);
     $data['Week'] = $week;
-    
+
     $success = $sth->execute($data);
     $sth->setFetchMode(PDO::FETCH_ASSOC);
-    
-    
-    $details = $sth->fetchAll();                               
-            
-    $postFile = "/data/shiftdata-".$week.".csv";
+
+
+    $details = $sth->fetchAll();
+
+    $postFile = "/data/shiftdata-" . $week . ".csv";
     $filename = $_SERVER['DOCUMENT_ROOT'] . $postFile;
     $fp = fopen($filename, 'w');
-    if(empty($details))
+    if (empty($details))
         return "";
-    fputcsv($fp, array_keys($details[0]));    
+    fputcsv($fp, array_keys($details[0]));
     foreach ($details as $key => $fields) {
         fputcsv($fp, $fields);
-    } 
-    
+    }
+
     fclose($fp);
-        
+
     return $postFile;
 }
 
