@@ -36,7 +36,7 @@ foreach ($field_names as $key => $value) {
         $_SESSION['success'] = $result;
     }
     
-    header('Location: admin.php');
+    header('Location: processAdminLogin.php');
     
 
 ?>

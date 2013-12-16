@@ -40,10 +40,12 @@
     <div class="input-group">
         <input name="WeekNumber"  type="text" class="form-control" placeholder="Enter week number" required>      
       <span class="input-group-btn">
-          <input type="submit" class="btn btn-inverse btn-large" value="Get Link"/>
+          <input type="submit" class="btn btn-inverse btn-large" value="Get Link"/>          
 <!--        <button class="btn btn-default" type="submit"></button>-->
-      </span>
-    </div><!-- /input-group --> 
+      </span>        
+    </div>
+              <br/>Current Week #: <?php echo date('W');?>
+              <!-- /input-group --> 
 </form></li><br/>          
 
 </ul>
