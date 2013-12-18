@@ -10,6 +10,8 @@ require_once(LIBRARY_PATH . "/entryManagement.php");
 
 $shift_data = array();
 
+//print_r($_POST);
+
 for ($i = 0; $i < 5; $i++) {
     if (isset($_POST['shift' . $i . '_active']) == 'on') {
         date_default_timezone_set('UTC');
@@ -22,9 +24,39 @@ for ($i = 0; $i < 5; $i++) {
         $newformat = date('Y-m-d H:i:s', $time);
         echo "<br/>";
         $shift_data["shift" . $i]["to"] = $_POST['shift' . $i . '_to'];
-        $shift_data["shift" . $i]["numberOfCandidates"] = $_POST['shift' . $i . '_numberOfCandidates'];
+        $shift_data["shift" . $i]["numberOfCandidates"] = $_POST['shift' . $i . '_numberOfCandidates'];                
+        $shift_data["shift" . $i]["days"] = preg_grep_keys("/shift".$i."_days_.*/", $_POST);           
+        $shift_data["shift" . $i]["ShiftIds"] = preg_grep_key_value("/shift".$i."_shiftid_.*/", $_POST);                   
     }
+    
 }
+
+function preg_grep_keys( $pattern, $input, $flags = 0 )
+{
+    
+    $keys = preg_grep( $pattern, array_keys( $input ), $flags );
+    $vals = array();
+    foreach ( $keys as $key )
+    {        
+        array_push($vals, $input[$key]);
+    }
+    return $vals;
+}
+
+function preg_grep_key_value( $pattern, $input, $flags = 0 )
+{    
+    $keys = preg_grep( $pattern, array_keys( $input ), $flags );        
+    $vals = array();
+    foreach ( $keys as $key)
+    {        
+        $value = $input[$key];
+        if($value != -1)
+            $vals[$key] = $value;
+    }
+    return $vals;
+}
+
+
 
 addNewShift($shift_data, $dbh);
 

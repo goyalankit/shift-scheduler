@@ -167,20 +167,36 @@ function addNewShift($values, $dbh) {
     deactivateNewShifts($weekNumber, date('Y'), $dbh);
 
     foreach ($values as $shiftNumber => $value) {
+        $data = array();
         $data['shiftFrom'] = trim($value['from']);
         $data['shiftTo'] = trim($value['to']);
         $data['numberOfCandidates'] = trim($value['numberOfCandidates']);
         $data['active'] = 'true';
+        $shiftids = $value['ShiftIds'];
 
-        if (isset($value['shiftId'])) {
-            updateShift($value['shiftId'], $data, $dbh);
+        $already_updated_days = array();                                      
+        
+        foreach ($shiftids as $key => $kvalue) {                          
+            $dy = explode("_", $key);            
+            $shift_date = date('Y-m-d', strtotime("next week " . $dy[2]));
+            
+            array_push($already_updated_days, $shift_date.":".$dy[2]);                        
+            if(!empty($value["days"]) && in_array(trim($dy[2]), $value["days"])){
+                echo "updating".$dy[2];
+                updateShift($kvalue, $data, $dbh);
+            }
             continue;
         }
-
-        $data['ShiftDate'] = getFirstDayNextWeek();
-        if (!fourShiftsAlreadyPresentForDate($data['ShiftDate'], $dbh)) {
-            $shiftId = insertShift($data, $dbh);
-            addShiftToAvailableShiftsNew($shiftId, $shiftNumber, $data['ShiftDate'], $dbh);
+        
+        if(!empty($value["days"])){
+        
+            foreach ($value["days"] as $ind => $dayv ){                
+                $data['ShiftDate'] = date('Y-m-d', strtotime("next week " . $dayv));                                
+                if(in_array($data['ShiftDate'].":".$dayv, $already_updated_days))
+                        continue;
+                $shiftId = insertShift($data, $dbh);
+                addShiftToAvailableShiftsNew($shiftId, $shiftNumber, $data['ShiftDate'], $dbh);        
+            }
         }
     }
 }
@@ -194,7 +210,7 @@ function deactivateNewShifts($week, $year, $dbh) {
 
 function addShiftToAvailableShiftsNew($shiftId, $shiftNumber, $date, $dbh) {
     $weekNumber = date("W") + 1;
-    $date = getFirstDayNextWeek();
+    $date = $date;
     $dt = new DateTime($date);
     $day = strtolower($dt->format('l'));
     $year = strtolower($dt->format('Y'));
@@ -275,24 +291,24 @@ function shiftsForWeek($dbh, $weekNumber, $year) {
         return array();
     }
 
-    $sql = "select * from shift_dates as sd JOIN shift as s on (sd.Week=:Week and sd.Year=:Year and sd.ShiftId = s.ShiftId and s.Active='true');";
+    $sql = "select * from shift_dates as sd JOIN shift as s on (sd.Week=:Week and sd.Year=:Year and sd.ShiftId = s.ShiftId);";
     $sth = $dbh->prepare($sql);
     $data['Week'] = $weekNumber;
     $data['Year'] = $year;
 
     $success = $sth->execute($data);
-    $details = $sth->fetchAll();
-
+    $details = $sth->fetchAll();    
+    
     $shift_details = array();
     if (!empty($details)) {
-        foreach ($details as $key => $value) {
-            $shift_details["shift" . $value["ShiftNumber"]]["ShiftId"] = $value["ShiftId"];
+        foreach ($details as $key => $value) {            
+            $shift_details["shift" . $value["ShiftNumber"]]["ShiftId"][$value["ShiftId"]] = $value["Day"];                        
             $shift_details["shift" . $value["ShiftNumber"]]["ShiftFrom"] = $value["ShiftFrom"];
             $shift_details["shift" . $value["ShiftNumber"]]["ShiftTo"] = $value["ShiftTo"];
             $shift_details["shift" . $value["ShiftNumber"]]["NumberOfCandidates"] = $value["NumberOfCandidates"];
-            $shift_details["shift" . $value["ShiftNumber"]]["Active"] = $value["Active"];
+            $shift_details["shift" . $value["ShiftNumber"]]["Active"][$value["ShiftId"]] = $value["Active"];            
         }
-    }
+    }       
     return $shift_details;
 }
 

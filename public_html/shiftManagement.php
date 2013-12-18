@@ -7,7 +7,8 @@ require_once(LIBRARY_PATH . "/connection_open.php");
 require_once(LIBRARY_PATH . "/entryManagement.php");
 
 $variables = array();
-$variables = shiftsForWeek($dbh, date("W") + 1, 2013);
+$variables = shiftsForWeek($dbh, date("W") + 1, date('Y'));
+
 renderLayoutWithContentFile("shifts.php", $variables);
 ?>
 
