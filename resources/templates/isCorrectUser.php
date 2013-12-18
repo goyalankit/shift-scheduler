@@ -10,7 +10,7 @@ $details = $variables[0];
 <form method='post' action='processIsCorrectUser.php'>    
 
     <div class="jumbotron">
-        <h1>Are you <?php print $details['FirstName'] ?> <? print $details['LastName'] ?> ? </h1>
+        <h1>Are you <?php print $details['FirstName'] ." ".$details['LastName'] ?> ? </h1>
         <br/>
         <div class="btn-group">        
             <button class="btn btn-success btn-lg" name='isuser' type="submit" value='yes'><i class="icon-white icon-ok"></i> Yes I am</button>    

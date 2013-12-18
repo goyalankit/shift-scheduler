@@ -1,6 +1,5 @@
-<form type="submit" method="post" action="processShifts.php" class="well">                                  
-    <?php    
-    
+<form type="submit" method="post" action="processShifts.php" class="well">                                      
+    <?php        
     for ($i = 1; $i < 5; $i++) {
         $shift_var = empty($variables["shift" . $i]) ? NULL : $variables["shift" . $i];
 
@@ -90,8 +89,7 @@
             }            
         }
     }
-    
-    //                <input type="text" name="shift'.$i.'_shiftid" class="hidden" '.(is_null($shift_var) ? "" : "value=".$shift_var["ShiftId"]).'>
+        
     ?>                                   
     <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
@@ -103,4 +101,3 @@
 </form>
 
 <br/>
-<!--<input type="text" name="shift' . $i . '_shiftid" class="hidden" ' . (is_null($shift_var) ? "" : "value=" . $shift_var["ShiftId"]) . '>            -->
