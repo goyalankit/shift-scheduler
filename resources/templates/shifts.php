@@ -68,6 +68,9 @@
     
     //$boolkey = true corresponds to the checkboxes field. It's value will be used to decide whether checkbox is checked or not
     //$boolkey = false sets the value of the shiftid to be set. If shift is active then the shiftd will be returned else -1 is returned.        
+    //This is done to keep the shift id hidden on the form and update the same id rather than creating a new one.
+    // Represents the case when user selects->deselects->selects the same shift. No new shift id is created.
+    
     function getId($value,$id_day,$activeArray,$boolkey){
         if(empty($id_day))
             return -1;
