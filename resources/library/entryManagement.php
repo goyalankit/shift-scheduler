@@ -182,7 +182,7 @@ function addNewShift($values, $dbh) {
             
             array_push($already_updated_days, $shift_date.":".$dy[2]);                        
             if(!empty($value["days"]) && in_array(trim($dy[2]), $value["days"])){
-                echo "updating".$dy[2];
+                //echo "updating".$dy[2];
                 updateShift($kvalue, $data, $dbh);
             }
             continue;
@@ -278,7 +278,7 @@ function getNextDay($date) {
     return date('Y-m-d', strtotime('+1 day', strtotime($date)));
 }
 
-function shiftsForWeek($dbh, $weekNumber, $year) {
+function shiftsForWeek($dbh, $weekNumber, $year, $only_active) {
     $sql = "select * from shift_dates where Week=:Week and Year=:Year;";
     $sth = $dbh->prepare($sql);
     $data['Week'] = $weekNumber;
@@ -302,11 +302,13 @@ function shiftsForWeek($dbh, $weekNumber, $year) {
     $shift_details = array();
     if (!empty($details)) {
         foreach ($details as $key => $value) {            
-            $shift_details["shift" . $value["ShiftNumber"]]["ShiftId"][$value["ShiftId"]] = $value["Day"];                        
-            $shift_details["shift" . $value["ShiftNumber"]]["ShiftFrom"] = $value["ShiftFrom"];
-            $shift_details["shift" . $value["ShiftNumber"]]["ShiftTo"] = $value["ShiftTo"];
-            $shift_details["shift" . $value["ShiftNumber"]]["NumberOfCandidates"] = $value["NumberOfCandidates"];
-            $shift_details["shift" . $value["ShiftNumber"]]["Active"][$value["ShiftId"]] = $value["Active"];            
+            if($only_active != 'true' || ($only_active == "true" && $value['Active'] == "true")){
+                $shift_details["shift" . $value["ShiftNumber"]]["ShiftId"][$value["ShiftId"]] = $value["Day"];                        
+                $shift_details["shift" . $value["ShiftNumber"]]["ShiftFrom"] = $value["ShiftFrom"];
+                $shift_details["shift" . $value["ShiftNumber"]]["ShiftTo"] = $value["ShiftTo"];
+                $shift_details["shift" . $value["ShiftNumber"]]["NumberOfCandidates"] = $value["NumberOfCandidates"];
+                $shift_details["shift" . $value["ShiftNumber"]]["Active"][$value["ShiftId"]] = $value["Active"];            
+            }
         }
     }       
     return $shift_details;

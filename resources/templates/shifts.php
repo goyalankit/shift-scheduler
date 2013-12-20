@@ -1,14 +1,14 @@
 <form type="submit" method="post" action="processShifts.php" class="well">                                      
     <?php        
     for ($i = 1; $i < 5; $i++) {
-        $shift_var = empty($variables["shift" . $i]) ? NULL : $variables["shift" . $i];
-
+        $shift_var = empty($variables["shift" . $i]) ? NULL : $variables["shift" . $i];        
+        
         echo '<h3> Shift' . ($i) . '</h3>
                 
         <div class="form-group">
             <label for="Active" class="col-sm-2 control-label">Active</label>
             <div class="col-sm-4">
-                <input type="checkbox" value="true" ' . (is_null($shift_var) ? false : (!empty($shift_var["Active"]) ? "checked" : "")) . ' name="shift' . $i . '_active"/> <br/>
+                <input type="checkbox" value="true" ' . (is_null($shift_var) ? false : (in_array("true",$shift_var["Active"]) ? "checked" : "")) . ' name="shift' . $i . '_active"/> <br/>
             </div>
         </div>
         <br/>

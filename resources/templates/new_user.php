@@ -42,7 +42,7 @@ if (!empty($variables) && isset($variables[0]["UniqueId"])) {
 
                 <div class="checkbox">
                     <label>
-                        <input type="radio" name="Active" id="yes" value="true" value ="true"  <?php (isset($variables["Active"]) && $variables["Active"] == "true") ? print "checked"  : "" ?> /> Activate
+                        <input type="radio" name="Active" id="yes" value="true" value ="true" <?php !isset($variables["Active"]) ? print "checked" : "" ?>  <?php (isset($variables["Active"]) && $variables["Active"] == "true") ? print "checked"  : ""; ?> /> Activate
                     </label>
                 </div>
                 <div class="checkbox">

@@ -9,12 +9,15 @@ require_once(LIBRARY_PATH . "/connection_open.php");
 require_once(LIBRARY_PATH . "/entryManagement.php");
 
 $details = validateUser($_POST['unique_id'], $dbh);
-
 if (empty($details)) {
     print_r($_POST);
-    $_SESSION['errors'] = "invalid id";
+    $_SESSION['errors'] = "Incorrect Username. Please try again";
     header('Location: /public_html/');
-} else {
+}else if($details[0]["Active"] == "false"){    
+    $_SESSION['errors'] = "Your account has been deactivated. Please contact OSR office.";
+    header('Location: /public_html/');
+} 
+else {
 
     $_SESSION['uniqueId'] = $_POST['unique_id'];
     renderLayoutWithContentFile("isCorrectUser.php", $details);

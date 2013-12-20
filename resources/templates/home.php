@@ -8,7 +8,7 @@
 if (isset($_SESSION['errors'])) {
     echo '<div class="alert alert alert-danger alert-dismissable">
   <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-  <strong>Error!</strong> Incorrect Username. Please try again
+  <strong>Error!</strong> '.$_SESSION["errors"].'
 </div>';
     unset($_SESSION['errors']);
     session_destroy();

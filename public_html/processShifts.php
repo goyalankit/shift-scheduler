@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 require_once(realpath(dirname(__FILE__) . "/../resources/config.php"));
 
 require_once(LIBRARY_PATH . "/templateFunctions.php");
@@ -22,7 +22,6 @@ for ($i = 0; $i < 5; $i++) {
         $shift_data["shift" . $i]["from"] = $_POST['shift' . $i . '_from'];
         $time = strtotime($_POST['shift' . $i . '_from']);
         $newformat = date('Y-m-d H:i:s', $time);
-        echo "<br/>";
         $shift_data["shift" . $i]["to"] = $_POST['shift' . $i . '_to'];
         $shift_data["shift" . $i]["numberOfCandidates"] = $_POST['shift' . $i . '_numberOfCandidates'];                
         $shift_data["shift" . $i]["days"] = preg_grep_keys("/shift".$i."_days_.*/", $_POST);           
@@ -60,6 +59,7 @@ function preg_grep_key_value( $pattern, $input, $flags = 0 )
 
 addNewShift($shift_data, $dbh);
 
-echo "New Shifts Added Successfully!";
-echo "<a href='processAdminLogin.php'>click to go back </a>";
+$_SESSION['success'] = "INFO: Schedule Updated successfully!";
+header('Location: processAdminLogin.php');
 ?>
+
